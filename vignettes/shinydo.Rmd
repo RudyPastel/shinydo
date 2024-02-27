@@ -1,0 +1,430 @@
+---
+title: "shinydo"
+author: Dr Rudy Pastel
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{shinydo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, 
+  echo = TRUE,
+  eval = FALSE,
+  comment = "#>"
+)
+```
+
+`shinydo` is the path away from the pains of haphazard scripts toward shiny 
+engineering. `shinydo` shows many doors but the craftsman has to go through them.
+
+```{r, echo=FALSE, eval=TRUE, layout="l-page", fig.height=2,fig.cap='The path'}
+DiagrammeR::grViz(diagram = "images/graphScripts/path.gv", width = '100%')
+```
+
+Come along as we journey the fabled Google trend index project.
+
+## Key ideas to remember
+
+1. R is a functional language: use functions and shiny modules
+1. R/Shiny development is software engineering: use version control and packages. 
+1. Especially in group, think processes through: use the Golem framework.
+
+A curriculum referencing study material concludes this presentation
+
+
+## R, in the off chance you do not know
+
+R is a first choice programming language / environment for:
+
+- data analysis via statistics, machine learning, data mining ...
+- visualisation of tables, maps, networks ...
+- publication of reports, book, reproducible research ...
+
+Shiny brings the analysis results to users via a gui.
+
+
+## Create "Google trend index" on your own
+
+The boss tasks you with developing Google trend indices. You proudly submit 
+the following shiny app.
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::runInternalApp(appName = 'googleTrendIndex_V0', display.mode = 'showcase')
+```
+
+Because the app is tiny, the code seems acceptable.
+
+* The code is divided in sections with clear purposes
+* The code breathes i.e. spans many short lines so as to be easy to read
+* Comments are plentiful and informative
+* Variable names are descriptive
+
+None the less, its structure will  not survive the extension required by initial 
+success. 
+
+### Google, Bing, and Yahoo
+
+Assume the boss is happy with the Google trend index app and now wants you 
+to include the other big search engines i.e. Bing and Yahoo. The
+trend indices should be displayed independently for a more flexible analysis. How
+do you do it?
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::pauseAndThinkAboutIt(seconds = 30)
+message('Share your ideas via the common chat.')
+```
+
+Unfortunately, an all to frequent answer is the quick and dirty copy-paste-rename
+method.
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::runInternalApp(appName = 'googleTrendIndex_V1', display.mode = 'showcase')
+```
+
+The quick and dirty copy-paste-rename method typically results in the following ills.
+
+* The length and structurelessness of the code beget repulsion and tedium.
+* Repetition killed readability and maintainability.
+* The intertwining of business logic with shiny logic cause confusion.
+
+Do not do that! Once the code reaches this sorry state, no one wants to touch it.
+Usually, the code is then quietly abandoned and dies off silently. But not always...
+
+### Google, Bing, Yahoo, Baidu and Yandex then top 10
+
+The boss is happy with the top 3 and now wants a top 10 analysis. You wisely
+negotiate to first provide a top 5 as an opportunity to restructure the code and
+enable future extensions. How do you do it?
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::pauseAndThinkAboutIt(seconds = 30)
+message('Share your ideas via the common chat.')
+```
+
+This time, you decide to leverage the functional nature of R and the possibility
+to split the app into two files and a folder of support functions.
+
+* Define the front end of your app in ui.R 
+* Define the back end of your app in server.R
+* Define the support functions of your app in the R/ folder
+  * Implement the business logic in pure R functions
+  * Implement the shiny logic as shiny modules
+
+In preparation to this new approach, let us first expend on Shiny modules.
+
+##### Shiny modules
+
+Shiny modules avoid the duplication of shiny code by virtue of being R functions
+encapsulating Shiny logic. Practically, a shiny module is a pair of functions. 
+One defines a ui building block and the one defines its server logic. Because
+they can be tested and nested, modules allow the decomposition of the app is manageable
+pieces. The function `shiny::shinyAppTemplate()` provides an exemple.
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::runInternalApp(appName = 'shinyModuleDemo', display.mode = 'showcase')
+```
+
+The example module is implemented as the pair of functions `exampleModuleUI` and
+`exampleModuleServer`. The module i.e. the pair of functions is used twice: once
+with identifier `examplemodule1` and once with identifier `examplemodule2`. The
+module defines the logic exactly once and reuses it every time. Its implementation
+makes it obvious.
+
+```{r,eval=TRUE,echo=FALSE,results='asis'}
+moduleCode = readLines(con = file.path(
+  shinydo::getInternalAppFolder(), 'shinyModuleDemo', 'R', 'example-module.R')
+  )
+moduleCode = c('```{r,echo=TRUE,eval=FALSE}', moduleCode, '```')
+cat(paste(moduleCode, collapse = '\r\n'))
+```
+
+
+### Google, Bing, Yahoo, Baidu and Yandex
+
+The top 5 app structure is so crystal clear, there is no need to split its code
+between ui.R and server.R
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::runInternalApp(appName = 'googleTrendIndex_V2', display.mode = 'showcase')
+```
+
+The plot function is pure R and can be developed, tested and reused independently
+from the app.
+
+```{r,eval=TRUE,echo=FALSE,results='asis'}
+moduleCode = readLines(con = file.path(
+  shinydo::getInternalAppFolder(), 'googleTrendIndex_V2', 'R', 'plotTrendIndex.R')
+  )
+moduleCode = c('```{r,echo=TRUE,eval=FALSE}', moduleCode, '```')
+cat(paste(moduleCode, collapse = '\r\n'))
+```
+
+The module code is as simple as the very first app. Simplifying it with submodules
+is possible but would be an overkill.
+
+```{r,eval=TRUE,echo=FALSE,results='asis'}
+moduleCode = readLines(con = file.path(
+  shinydo::getInternalAppFolder(), 'googleTrendIndex_V2', 'R', 'indexTrendModule.R')
+  )
+moduleCode = c('```{r,echo=TRUE,eval=FALSE}', moduleCode, '```')
+cat(paste(moduleCode, collapse = '\r\n'))
+```
+
+### Top 10 search engine trend index
+
+Extending the app to a top 10 is now trivial.
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::runInternalApp(appName = 'googleTrendIndex_V3', display.mode = 'showcase')
+```
+
+The boss is happy and praises you. You bask in glory.
+
+## Share "Google trend index" with your users
+
+Your work is very successful and popular: multiple colleagues from multiple teams
+want to use your results and even build on them for their own analysis. The boss
+wants you to make it happen and make the team / them proud. How do you do it?
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::pauseAndThinkAboutIt(seconds = 30)
+message('Share your ideas via the common chat.')
+```
+
+Please, do not:
+
+* Share code via mail or a share folder
+* Assume users will understand your code and just make it work
+* Organise "quick" introduction meetings to explain the code and install the 
+code on your users' computers
+* Have even "quicker" meetings to fix bugs on their machines
+
+Instead, do this:
+
+* Remember that future you is your first user and be kind
+* Convert your code into a R package 
+  * Actually, R packages should be the default code structure. 
+* Document and test all functions
+* Select the functions accessible to users and demonstrate them in a tutorial 
+* Put your package in an accessible code repository such as [github](https://github.com/).
+* Share a code snippet downloading the package and opening the tutorial.
+* Improve the package based on feedback and put new versions in the repo
+
+For your users, accessing your code should be as simple as those lines.
+
+```{r}
+# Get started
+install.packages('shinydo')
+vignette(package = 'shinydo', 'shinydo')
+
+# Run the app
+shinydo::startTrendIndexDashboard ()
+
+# Query documentation
+?shinydo::getTrendIndexData
+?shinydo::plotTrendIndex
+
+# Use key functions
+trend_data = shinydo::getTrendIndexData(searchEngine = 'Google')
+trend_data = subset(x = trend_data, subset = type == 'A')
+shinydo::plotTrendIndex(date = trend_data$date, 
+                        close = trend_data$close, 
+                        smoother = TRUE, 
+                        smootherSpan = 0.3)
+```
+
+### R package 101
+
+The `devtools` package is your friend and creates the package skeleton for you.
+
+```{r,eval=TRUE,echo=TRUE}
+packageFolder = file.path(tempdir(), 'demoPackage')
+devtools::create(path = packageFolder, open = FALSE)
+```
+
+
+Just write the right information in the right place.
+
+```{r,eval=TRUE,echo=FALSE}
+fs::dir_tree(path = packageFolder, recurse = FALSE)
+```
+It is simple:
+
+1. In the `DESCRIPTION` file, list the packages required to run your code.
+1. In `R`, put your documented functions, marking those accessible to users.
+1. Build the documentation file with `devtools::document()`.
+1. Build the package file with `devtools::build()`.
+1. You are done.
+
+The final `DESCRIPTION` may look like this.
+
+```{r,eval=TRUE,echo=FALSE,results='asis'}
+moduleCode = readLines(con = './../DESCRIPTION')
+moduleCode = c('```{r,echo=TRUE,eval=FALSE,cap="DESCRIPTION"}', moduleCode, '```')
+cat(paste(moduleCode, collapse = '\r\n'))
+```
+
+A documented function file in the `R` folder may look like this.
+
+```{r,eval=TRUE,echo=FALSE,results='asis'}
+moduleCode = readLines(con = './../R/plotTrendIndex.R')
+moduleCode = c('```{r,echo=TRUE,eval=FALSE,cap="plotTrendIndex.R"}', moduleCode, '```')
+cat(paste(moduleCode, collapse = '\r\n'))
+```
+
+
+```{r,eval=TRUE,echo=FALSE,results='asis'}
+rdPath = list.files(path = './../man/', pattern = 'plotTrendIndex', full.names = TRUE)
+htmlPath = tempfile(pattern = 'plotTrendIndex.html')
+tools::Rd2HTML(Rd = rdPath, out = htmlPath, package = "shinydo", stylesheet = "R.css")
+htmlLines = readLines(con = htmlPath)
+cat(paste(htmlLines[-(1:3)], collapse = '\r\n'))
+```
+
+### Shiny package 101
+
+This is a R package with Shiny modules and a function to start the app.
+
+
+```{r,eval=TRUE,echo=FALSE,results='asis'}
+moduleCode = readLines(con = './../R/appFunctions.R')
+moduleCode = c('```{r,echo=TRUE,eval=FALSE,cap="plotTrendIndex.R"}', moduleCode, '```')
+cat(paste(moduleCode, collapse = '\r\n'))
+```
+
+### Main benefits of R packages
+
+* The package is a well established and documented standard
+  * Developers can rely on robust tools, processes and conventions to save time
+  * Users know how to read the documentation, use the functions and build on them
+* The package enables many quality improving features
+  * Documentation of functions and tutorial for usages
+  * Test of functions, including shiny modules
+  * Reproducible research / data analysis
+
+## Develop "Google trend index" as a team
+
+Your works enjoys laudatory acclaim! A group of power users gathers and calls for
+more. The boss gives you carte blanche to extend the analysis and publish the tool
+internally. How do you set up your team? How do you organise development?
+
+
+```{r,echo=TRUE,eval=FALSE}
+shinydo::pauseAndThinkAboutIt(seconds = 30)
+message('Share your ideas via the common chat.')
+```
+
+Shiny is great for proofs of concepts. Shiny can deliver software product too!
+This requires a mindset shift from data analysis and visualisation to software engineering.
+
+### Know your limits and hire expertise
+
+Transforming a Shiny app into a software product requires new skills.
+Know your limits and hire the relevant expertise in:
+
+* Architecture
+* Cyber-security
+* Dev Ops
+* User experience / User interface
+
+The IT department can introduce you to the correct people for those tasks. Dedicated
+R tools exists and should be used. You may not have the culture to think about them.
+The experts will prompt you to look for them.
+
+### Rely on thought through processes
+
+Software emerges from the interactions of people, tools, code and processes.
+The [Golem](https://engineering-shiny.org/index.html) framework is all about the
+process of building an application that will later be sent to production. 
+
+#### Design
+
+1. Sketch the user interface with users
+1. Style the user interface with users
+1. Draw the architecture 
+
+#### Prototype
+
+
+1. Prototype the Ui with a place holding back-end for users to test and approve
+1. Prototype the business logic to understand the user's need and document it
+
+#### Build
+
+1. Organise your code to keep business logic, shiny logic and style apart
+1. Define processes w.r.t. to version control, development and tests
+1. Build the Ui and gather user approval
+1. Implement, document and test the business logic function
+1. Combine business and shiny logic into modules
+
+#### Strengthen
+
+1. Test the business logic functions
+1. Test the modules
+1. Test load resistance
+1. Test in a reproducible environment
+1. Test automatically thanks to continuous integration
+
+#### Deploy
+
+1. Decide how your users will access your work:
+    1. Download and install package from repository
+    1. Access running app via a secure url
+1. Design, implement and automate the delivery process to:
+    1. [github](https://github.com/)
+    1. Your department private server
+    1. ...
+    
+#### Test 101
+
+To test a function, do not manually call it with random input. Instead, write a 
+set of well chosen test scenarios to be automatically and always run. As usual,
+a dedicated package helps: `usethis`.
+
+```{r,echo=TRUE,eval=TRUE,warning=FALSE}
+setwd(packageFolder)
+usethis::use_r(name = "myNewFunction")    # creates and opens R/myNewFunction.R
+usethis::use_test(name = "myNewFunction") # creates and opens tests/testthat/test-myNewFunction.R
+```
+
+The core of unit testing is making sure that for a given input, the function 
+behaves as you expect.
+
+```{r}
+test_that("multiplication works", {
+  expect_equal(2 * 2, 4)
+})
+
+test_that("myNewFunction works", {
+  expect_equal(myNewFunction(wellChosenInput), expectedOutput)
+  expect_error(myNewFunction(wrongInput), 'Error message')
+})
+
+```
+
+
+First, implement the new function and the test in parallel around an easy set of
+inputs. Then add tests of increasing difficulties for edge cases, missing input,
+input of the wrong kind... `tests/testthat.R` runs all the tests.
+
+```{r,eval=TRUE,echo=FALSE}
+fs::dir_tree(path = packageFolder, recurse = TRUE)
+```
+
+
+
+## R curriculum
+
+```{r, echo=FALSE,eval=TRUE, results='asis'}
+res <- knitr::knit_child("./r-curriculum.Rmd", quiet = TRUE)
+res = gsub(pattern = '##', replacement = '###', x = res)
+cat(res, sep = '\n')
+```
+
+```{r,eval=FALSE, child="./r-curriculum.Rmd"}
+
+```
+

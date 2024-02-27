@@ -1,0 +1,116 @@
+---
+title: "R curriculum"
+author: "Dr Rudy Pastel"
+date: "`r format(Sys.time(), '%A %d %B %Y')`"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{R curriculum}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+ 
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::knit_hooks$set(
+   error = function(x, options) {
+     paste('\n\n<div class="alert alert-danger">',
+           gsub('##', '\n', gsub('^##\ Error', '**Error**', x)),
+           '</div>', sep = '\n')
+   },
+   warning = function(x, options) {
+     paste('\n\n<div class="alert alert-warning">',
+           gsub('##', '\n', gsub('^##\ Warning:', '**Warning**', x)),
+           '</div>', sep = '\n')
+   },
+   message = function(x, options) {
+     paste('\n\n<div class="alert alert-info">',
+           gsub('##', '\n', x),
+           '</div>', sep = '\n')
+   }
+)
+```
+
+ 
+
+Beginners, power users and software developers will find here a list of references
+to build, hone and professionalise their `R` and software development skills.
+
+ 
+
+## R Language
+
+ 
+
+* [CRAN](https://cran.r-project.org/manuals.html)
+* [R for Data Science](https://r4ds.had.co.nz/)
+* [tidyverse](https://www.tidyverse.org/)
+* [Advanced R](https://adv-r.hadley.nz/)
+* [R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf)
+* [RStudio IDE](https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf)
+
+ 
+
+## Package development
+
+ 
+
+* [Git](https://git-scm.com/)
+* [R Packages](https://r-pkgs.org/)
+* [Mastering Software Development in R](https://bookdown.org/rdpeng/RProgDA/)
+* [rOpenSci Packages: Development, Maintenance, and Peer Review](https://devguide.ropensci.org/)
+* [Extending R](https://www.routledge.com/Extending-R/Chambers/p/book/9781498775717)
+
+ 
+
+## Reporting and literate programming
+
+ 
+
+
+* [R markdown](https://bookdown.org/yihui/rmarkdown/)
+* [bookdown](https://bookdown.org/yihui/bookdown/)
+* [blogdown](https://bookdown.org/yihui/blogdown/)
+* [Famous quotes](http://www.literateprogramming.com/)
+
+ 
+
+## Visualisation
+
+ 
+
+* [ggplot2](https://ggplot2.tidyverse.org/)
+* [plotly](https://plotly-r.com/)
+* [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/)
+* [Data Visualization, a practical introduction](https://socviz.co/)
+* [The Work of Edward Tufte and Graphics Press](https://www.edwardtufte.com/tufte/)
+
+ 
+
+## Dashboard
+
+* [Shiny’s online documentation](https://shiny.rstudio.com/)
+* [Mastering Shiny](https://mastering-shiny.org/)
+* [shinydashboard](https://rstudio.github.io/shinydashboard/)
+
+ 
+
+## Communities
+
+* [R open science](https://ropensci.org/)
+* [RStudio](https://community.rstudio.com/)
+* [RStudio Full Service Certified Partners](https://rstudio.com/certified-partners/)
+* [R Consultants](https://community.rstudio.com/groups/consultants/)
+
+ 
+
+ 
+
+## Other sources of information
+
+ 
+
+* [RStudio Education](https://education.rstudio.com/)
+* [bookdown collection](https://bookdown.org/)
+* [RStudio books](https://rstudio.com/resources/books/)

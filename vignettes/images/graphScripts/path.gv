@@ -1,0 +1,27 @@
+
+        digraph boxes_and_circles {
+
+                         # a "graph" statement
+                         graph [overlap = true, fontsize = 10, rankdir = LR]
+
+                         # # an import specific node state
+                         # node [shape = oval, fontname = Helvetica, fontcolor = black]
+                         # A [label = <Import specific code>];
+
+                         # several package "node" statements
+                         node [shape = oval, fontname = Helvetica, fontcolor = black]
+                         A [label = <R> ];
+                         B [label = <Shiny> ];
+                         C [label = <Packages> ];
+                         D [label = <Shiny 
+ Packages> ];
+                         E [label = <Shiny 
+ Engineering> ];
+
+                         # several "edge" statements
+                         # A->B [label = <interfaces with>, dir = both]
+                         A->{B C}
+                         {B, C}->D
+                         D->E
+                         }
+                         

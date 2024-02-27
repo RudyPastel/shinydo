@@ -1,0 +1,30 @@
+Package: shinydo
+Title: A Craftsman's Journey Toward Shiny Mastery
+Version: 0.0.4
+Authors@R: 
+    c(person(given = "Rudy",
+             family = "Pastel",
+             role = c("aut", "cre"),,
+             email = "rudy.pastel@gmail.com"))
+Description: Shinydo is a narrative guiding the Shiny craftsman from "Hello World"
+    to Shiny software engineering.
+License: `use_gpl3_license()`
+Imports:
+    shiny (>= 1.6.0),
+    shinythemes (>= 1.2.0),
+    dplyr (>= 1.0.5),
+    readr (>= 1.4.0)
+Suggests: 
+    testthat (>= 3.0.2),
+    devtools (>= 2.3.2),
+    knitr (>= 1.30),
+    rmarkdown (>= 2.8),
+    usethis (>= 2.0.1),
+    DiagrammeR (>= 1.0.6.1),
+    fs (>= 1.5.0)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+Config/testthat/edition: 3
